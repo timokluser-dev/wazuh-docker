@@ -45,7 +45,7 @@ RUN set -x && \
 
 # Services
 RUN mkdir /etc/service/wazuh && \
-   mkdir /etc/service/wazuh-api && \
+#    mkdir /etc/service/wazuh-api && \
    mkdir /etc/service/postfix && \
    mkdir /etc/service/filebeat
 
@@ -54,8 +54,8 @@ COPY config/wazuh.runit.service /etc/service/wazuh/run
 COPY config/postfix.runit.service /etc/service/postfix/run
 COPY config/filebeat.runit.service /etc/service/filebeat/run
 
-RUN chmod +x /etc/service/wazuh-api/run && \
-   chmod +x /etc/service/wazuh/run && \
+# RUN chmod +x /etc/service/wazuh-api/run && \
+RUN chmod +x /etc/service/wazuh/run && \
    chmod +x /etc/service/postfix/run && \
    chmod +x /etc/service/filebeat/run 
 
@@ -79,7 +79,7 @@ EXPOSE 55000/tcp 1514/udp 1515/tcp 514/udp 1516/tcp
 # Setting volumes
 # Once we declared a volume in the Dockerfile, changes made to that path will have no effect. In other words, any changes made
 # to the these paths from here to the end of the Dockerfile will not be taken into account when mounting the volume.
-VOLUME ["/var/ossec/api/configuration"]
+# VOLUME ["/var/ossec/api/configuration"]
 VOLUME ["/var/ossec/etc"]
 VOLUME ["/var/ossec/logs"]
 VOLUME ["/var/ossec/queue"]
@@ -116,8 +116,8 @@ RUN chmod 755 /entrypoint.sh && \
 # Issues: Wazuh-api
 # https://github.com/wazuh/wazuh-api/issues/440  
 # https://github.com/wazuh/wazuh-api/issues/443
-COPY --chown=root:ossec config/agents.js /var/ossec/api/controllers/agents.js
-RUN chmod 770 /var/ossec/api/controllers/agents.js
+# COPY --chown=root:ossec config/agents.js /var/ossec/api/controllers/agents.js
+# RUN chmod 770 /var/ossec/api/controllers/agents.js
 
 # Load wazuh alerts template.
 ADD https://raw.githubusercontent.com/wazuh/wazuh/$TEMPLATE_VERSION/extensions/elasticsearch/7.x/wazuh-template.json /etc/filebeat
