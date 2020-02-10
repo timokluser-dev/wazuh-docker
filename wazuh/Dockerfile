@@ -9,7 +9,7 @@ ARG WAZUH_VERSION=3.12.0-1
 ENV API_USER="foo" \
    API_PASS="bar"
 
-ARG TEMPLATE_VERSION="v3.10.2"
+ARG TEMPLATE_VERSION="v3.12.2"
 ENV FILEBEAT_DESTINATION="elasticsearch"
 
 
@@ -29,7 +29,7 @@ RUN set -x && \
     apt-get upgrade -y -o Dpkg::Options::="--force-confold" && \
     apt-get --no-install-recommends --no-install-suggests -y install openssl apt-transport-https vim expect python-boto python-pip python-cryptography && \
     apt-get --no-install-recommends --no-install-suggests -y install postfix bsd-mailx mailutils libsasl2-2 ca-certificates libsasl2-modules && \
-    dpkg -i wazuh-manager_3.12.0-FIMreworkSQLite4d6fdf2_amd64.deb && \
+    apt install wazuh-manager_3.12.0-FIMreworkSQLite4d6fdf2_amd64.deb && \
     apt-get --no-install-recommends --no-install-suggests -y install nodejs wazuh-api=${WAZUH_VERSION} && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* && \
