@@ -30,7 +30,7 @@ RUN set -x && \
     apt-get --no-install-recommends --no-install-suggests -y install openssl apt-transport-https vim expect python-boto python-pip python-cryptography && \
     apt-get --no-install-recommends --no-install-suggests -y install postfix bsd-mailx mailutils libsasl2-2 ca-certificates libsasl2-modules && \
     apt install wazuh-manager_3.12.0-FIMreworkSQLite4d6fdf2_amd64.deb && \
-    apt-get --no-install-recommends --no-install-suggests -y install nodejs wazuh-api=${WAZUH_VERSION} && \
+    # apt-get --no-install-recommends --no-install-suggests -y install nodejs wazuh-api=${WAZUH_VERSION} && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* && \
     rm -f /var/ossec/logs/alerts/*/*/* && \
