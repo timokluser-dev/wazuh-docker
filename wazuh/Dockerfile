@@ -50,7 +50,7 @@ RUN mkdir /etc/service/wazuh && \
    mkdir /etc/service/filebeat
 
 COPY config/wazuh.runit.service /etc/service/wazuh/run
-COPY config/wazuh-api.runit.service /etc/service/wazuh-api/run
+# COPY config/wazuh-api.runit.service /etc/service/wazuh-api/run
 COPY config/postfix.runit.service /etc/service/postfix/run
 COPY config/filebeat.runit.service /etc/service/filebeat/run
 
