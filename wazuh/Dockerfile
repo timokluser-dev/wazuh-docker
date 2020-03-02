@@ -3,7 +3,7 @@ FROM phusion/baseimage:latest
 
 # Arguments
 ARG FILEBEAT_VERSION=7.3.2
-ARG WAZUH_VERSION=3.10.2-1
+# ARG WAZUH_VERSION=3.10.2-1
 
 # Environment variables
 ENV API_USER="foo" \
@@ -11,6 +11,9 @@ ENV API_USER="foo" \
 
 ARG TEMPLATE_VERSION="v3.10.2"
 ENV FILEBEAT_DESTINATION="elasticsearch"
+
+COPY config/wazuh-api_3.12.0-0.commit44235d2_amd64.deb ./wazuh-api_3.12.0-0.commit44235d2_amd64.deb
+COPY config/wazuh-manager_3.12.0-0.commitf7577d8_amd64.deb ./wazuh-manager_3.12.0-0.commitf7577d8_amd64.deb
 
 # Install packages
 RUN set -x && \
@@ -26,8 +29,8 @@ RUN set -x && \
     apt-get upgrade -y -o Dpkg::Options::="--force-confold" && \
     apt-get --no-install-recommends --no-install-suggests -y install openssl apt-transport-https vim expect python-boto python-pip python-cryptography && \
     apt-get --no-install-recommends --no-install-suggests -y install postfix bsd-mailx mailutils libsasl2-2 ca-certificates libsasl2-modules && \
-    apt-get --no-install-recommends --no-install-suggests -y install wazuh-manager=${WAZUH_VERSION} && \
-    apt-get --no-install-recommends --no-install-suggests -y install nodejs wazuh-api=${WAZUH_VERSION} && \
+    apt-get --no-install-recommends --no-install-suggests -y install ./wazuh-manager_3.12.0-0.commitf7577d8_amd64.deb && \
+    apt-get --no-install-recommends --no-install-suggests -y install nodejs ./wazuh-api_3.12.0-0.commit44235d2_amd64.deb && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* && \
     rm -f /var/ossec/logs/alerts/*/*/* && \
