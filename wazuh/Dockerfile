@@ -9,7 +9,7 @@ ARG WAZUH_VERSION=3.13.0-1
 ENV API_USER="foo" \
    API_PASS="bar"
 
-ARG TEMPLATE_VERSION="v3.13.0"
+ARG TEMPLATE_VERSION="v3.12.2"
 ENV FILEBEAT_DESTINATION="elasticsearch"
 
 COPY config/wazuh-manager_3.13.0-1_amd64.deb /wazuh-manager_3.13.0-1_amd64.deb
