@@ -1,0 +1,38 @@
+FROM ubuntu:focal
+
+ARG WAZUH_VERSION=4.2.4
+ARG TEMPLATE_VERSION="master"
+
+RUN apt-get update
+RUN apt install curl apt-transport-https lsb-release gnupg -y
+
+RUN curl -s https://packages.wazuh.com/key/GPG-KEY-WAZUH | apt-key add -
+RUN echo "deb https://packages.wazuh.com/4.x/apt/ stable main" | tee -a /etc/apt/sources.list.d/wazuh.list
+
+RUN apt-get update
+
+RUN apt-get install wazuh-manager=${WAZUH_VERSION}-1
+
+RUN curl -L https://github.com/aelsabbahy/goss/releases/latest/download/goss-linux-amd64 -o /usr/local/bin/goss && chmod +rx /usr/local/bin/goss
+
+ARG S6_VERSION="v2.2.0.3"
+RUN curl --fail --silent -L https://github.com/just-containers/s6-overlay/releases/download/${S6_VERSION}/s6-overlay-amd64.tar.gz \
+    -o /tmp/s6-overlay-amd64.tar.gz && \
+    tar xzf /tmp/s6-overlay-amd64.tar.gz -C / --exclude="./bin" && \
+    tar xzf /tmp/s6-overlay-amd64.tar.gz -C /usr ./bin && \
+    rm  /tmp/s6-overlay-amd64.tar.gz
+
+COPY config/etc/ /etc/
+COPY --chown=root:ossec config/create_user.py /var/ossec/framework/scripts/create_user.py
+
+# Prepare permanent data
+# Sync calls are due to https://github.com/docker/docker/issues/9547
+COPY config/permanent_data.env config/permanent_data.sh /
+RUN chmod 755 /permanent_data.sh && \
+    sync && /permanent_data.sh && \
+    sync && rm /permanent_data.sh
+
+# Services ports
+EXPOSE 55000/tcp 1514/tcp 1515/tcp 514/udp 1516/tcp
+
+ENTRYPOINT [ "/init" ]

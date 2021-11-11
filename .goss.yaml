@@ -52,7 +52,7 @@ package:
   filebeat:
     installed: true
     versions:
-    - 7.10.2
+    - 7.11.2
   wazuh-manager:
     installed: true
     versions:
