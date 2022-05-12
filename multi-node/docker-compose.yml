@@ -164,6 +164,8 @@ services:
     hostname: nginx
     restart: always
     ports:
+      - "80:80"
+      - "443:443"
       - "1514:1514"
     depends_on:
       - wazuh.master
