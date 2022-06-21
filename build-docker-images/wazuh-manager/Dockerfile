@@ -14,7 +14,6 @@ RUN apt-get update && apt install curl apt-transport-https lsb-release gnupg -y
 COPY config/check_repository.sh /
 
 RUN chmod 775 /check_repository.sh
-ENV WAZUH_VERSION=${WAZUH_VERSION}
 RUN source /check_repository.sh
 
 
