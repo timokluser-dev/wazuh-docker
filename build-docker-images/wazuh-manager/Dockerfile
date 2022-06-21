@@ -14,7 +14,7 @@ RUN apt-get update && apt install curl apt-transport-https lsb-release gnupg -y
 COPY config/check_repository.sh /
 
 RUN chmod 775 /check_repository.sh
-RUN source /check_repository.sh
+RUN source /check_repository.sh ${WAZUH_VERSION}
 
 RUN apt-get update && \
     apt-get install wazuh-manager=${WAZUH_VERSION}-1
