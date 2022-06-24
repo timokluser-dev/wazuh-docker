@@ -12,7 +12,7 @@ on:
     # The branches below must be a subset of the branches above
     branches: [ "4.3-include-trivy" ]
   schedule:
-    - cron: '28 21 * * 5'
+    - cron: '00 08 * * 1'
 
 permissions:
   contents: read
@@ -75,3 +75,4 @@ jobs:
         uses: github/codeql-action/upload-sarif@v2
         with:
           sarif_file: 'trivy-results.sarif'
+
