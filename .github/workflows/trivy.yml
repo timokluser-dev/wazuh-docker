@@ -40,13 +40,8 @@ jobs:
           image-ref: 'wazuh/wazuh-manager:${{env.WAZUH_IMAGE_VERSION}}'
           format: 'template'
           template: '@/contrib/sarif.tpl'
-          output: 'trivy-results.sarif'
+          output: 'trivy-results-manager.sarif'
           severity: 'UNKNOWN,LOW,MEDIUM,CRITICAL,HIGH'
-
-      - name: Upload Trivy scan results to GitHub Security tab
-        uses: github/codeql-action/upload-sarif@v2
-        with:
-          sarif_file: 'trivy-results.sarif'
 
       - name: Run Trivy vulnerability scanner for Wazuh indexer
         uses: aquasecurity/trivy-action@2a2157eb22c08c9a1fac99263430307b8d1bc7a2
@@ -54,13 +49,8 @@ jobs:
           image-ref: 'wazuh/wazuh-indexer:${{env.WAZUH_IMAGE_VERSION}}'
           format: 'template'
           template: '@/contrib/sarif.tpl'
-          output: 'trivy-results.sarif'
+          output: 'trivy-results-indexer.sarif'
           severity: 'UNKNOWN,LOW,MEDIUM,CRITICAL,HIGH'
-
-      - name: Upload Trivy scan results to GitHub Security tab
-        uses: github/codeql-action/upload-sarif@v2
-        with:
-          sarif_file: 'trivy-results.sarif'
 
       - name: Run Trivy vulnerability scanner for Wazuh dashboard
         uses: aquasecurity/trivy-action@2a2157eb22c08c9a1fac99263430307b8d1bc7a2
@@ -68,11 +58,16 @@ jobs:
           image-ref: 'wazuh/wazuh-dashboard:${{env.WAZUH_IMAGE_VERSION}}'
           format: 'template'
           template: '@/contrib/sarif.tpl'
-          output: 'trivy-results.sarif'
+          output: 'trivy-results-dashboard.sarif'
           severity: 'UNKNOWN,LOW,MEDIUM,CRITICAL,HIGH'
+
+      - name: Combine three files results
+        run: |
+          cat trivy-results-manager.sarif > trivy-results.sarif
+          cat trivy-results-indexer.sarif >> trivy-results.sarif
+          cat trivy-results-dashboard.sarif >> trivy-results.sarif
 
       - name: Upload Trivy scan results to GitHub Security tab
         uses: github/codeql-action/upload-sarif@v2
         with:
           sarif_file: 'trivy-results.sarif'
-
