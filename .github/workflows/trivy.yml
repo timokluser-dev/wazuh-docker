@@ -75,3 +75,13 @@ jobs:
         with:
           sarif_file: 'trivy-results.sarif'
 
+      - name: Slack Notification
+        uses: rtCamp/action-slack-notify@v2
+        env:
+          SLACK_CHANNEL: cicd-internal
+          SLACK_COLOR: ${{ job.status }} # or a specific color like 'good' or '#ff00ff'
+          #SLACK_ICON: https://github.com/rtCamp.png?size=48
+          SLACK_MESSAGE: 'Check the results: https://github.com/wazuh/wazuh-docker/security/code-scanning?query=is%3Aopen+branch%3A4.3-include-trivy'
+          SLACK_TITLE: Wazuh docker Trivy vulnerability scan finished.
+          SLACK_USERNAME: github_actions
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
