@@ -30,6 +30,11 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Build Wazuh images
+        run: |
+          apt-get update
+          apt-get install -y jq
+
+      - name: Build Wazuh images
         run: build-docker-images/build-images.sh
 
       - name: Create enviroment variables
@@ -63,10 +68,7 @@ jobs:
           severity: 'UNKNOWN,LOW,MEDIUM,CRITICAL,HIGH'
 
       - name: Combine three files results
-        run: |
-          cat trivy-results-manager.sarif > trivy-results.sarif
-          cat trivy-results-indexer.sarif >> trivy-results.sarif
-          cat trivy-results-dashboard.sarif >> trivy-results.sarif
+        run: jq -s 'add' trivy-results-manager.sarif trivy-results-indexer.sarif trivy-results-dashboard.sarif
 
       - name: Upload Trivy scan results to GitHub Security tab
         uses: github/codeql-action/upload-sarif@v2
