@@ -29,7 +29,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Build Wazuh images
+      - name: Installing dependencies
         run: |
           sudo apt-get update
           sudo apt-get install -y jq
@@ -47,7 +47,7 @@ jobs:
           format: 'template'
           template: '@/contrib/sarif.tpl'
           output: 'trivy-results-manager.sarif'
-          severity: 'UNKNOWN,LOW,MEDIUM,CRITICAL,HIGH'
+          severity: 'LOW,MEDIUM,CRITICAL,HIGH'
 
       - name: Run Trivy vulnerability scanner for Wazuh indexer
         uses: aquasecurity/trivy-action@2a2157eb22c08c9a1fac99263430307b8d1bc7a2
@@ -56,7 +56,7 @@ jobs:
           format: 'template'
           template: '@/contrib/sarif.tpl'
           output: 'trivy-results-indexer.sarif'
-          severity: 'UNKNOWN,LOW,MEDIUM,CRITICAL,HIGH'
+          severity: 'LOW,MEDIUM,CRITICAL,HIGH'
 
       - name: Run Trivy vulnerability scanner for Wazuh dashboard
         uses: aquasecurity/trivy-action@2a2157eb22c08c9a1fac99263430307b8d1bc7a2
@@ -65,9 +65,9 @@ jobs:
           format: 'template'
           template: '@/contrib/sarif.tpl'
           output: 'trivy-results-dashboard.sarif'
-          severity: 'UNKNOWN,LOW,MEDIUM,CRITICAL,HIGH'
+          severity: 'LOW,MEDIUM,CRITICAL,HIGH'
 
-      - name: Combine three files results
+      - name: Combine three reports results
         run: jq -s 'add' trivy-results-manager.sarif trivy-results-indexer.sarif trivy-results-dashboard.sarif > trivy-results.sarif
 
       - name: Upload Trivy scan results to GitHub Security tab
@@ -75,7 +75,7 @@ jobs:
         with:
           sarif_file: 'trivy-results.sarif'
 
-      - name: Slack Notification
+      - name: Slack notification
         uses: rtCamp/action-slack-notify@v2
         env:
           SLACK_CHANNEL: cicd-internal
