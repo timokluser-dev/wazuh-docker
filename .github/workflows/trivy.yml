@@ -68,7 +68,7 @@ jobs:
           severity: 'UNKNOWN,LOW,MEDIUM,CRITICAL,HIGH'
 
       - name: Combine three files results
-        run: jq -s 'add' trivy-results-manager.sarif trivy-results-indexer.sarif trivy-results-dashboard.sarif
+        run: jq -s 'add' trivy-results-manager.sarif trivy-results-indexer.sarif trivy-results-dashboard.sarif > trivy-results.sarif
 
       - name: Upload Trivy scan results to GitHub Security tab
         uses: github/codeql-action/upload-sarif@v2
