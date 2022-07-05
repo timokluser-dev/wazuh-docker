@@ -47,7 +47,8 @@ check_update() {
     echo "CHECK UPDATE - Previous version: $previous_version"
     current_version=$(/var/ossec/bin/wazuh-control -j info | jq .data[0].WAZUH_VERSION | cut -d'"' -f2)
     echo "CHECK UPDATE - Current version: $current_version"
-    if [ $previous_version == $current_version ]
+    wazuh_version_regex='4.2.[0-9]'
+    if [[ "$current_version" =~ $wazuh_version_regex ]]
     then
       echo "CHECK UPDATE - Same Wazuh version in the EBS and image"
       return 0
