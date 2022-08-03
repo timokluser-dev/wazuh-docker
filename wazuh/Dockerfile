@@ -23,7 +23,8 @@ baseurl=https://packages.wazuh.com/4.x/yum/\n\
 protect=1\n'\
 >> /etc/yum.repos.d/wazuh.repo
 
-ADD https://packages-dev.wazuh.com/warehouse/test/4.4/rpm/var/wazuh-manager-4.4.0-13195.cluster.balancing.manager.todelete.x86_64.rpm /tmp/wazuh-manager-4.4.0-13195.cluster.balancing.manager.todelete.x86_64.rpm
+#ADD https://packages-dev.wazuh.com/warehouse/test/4.4/rpm/var/wazuh-manager-4.4.0-13195.cluster.balancing.manager.todelete.x86_64.rpm /tmp/wazuh-manager-4.4.0-13195.cluster.balancing.manager.todelete.x86_64.rpm
+RUN curl https://packages-dev.wazuh.com/warehouse/test/4.4/rpm/var/wazuh-manager-4.4.0-13195.cluster.balancing.manager.todelete.x86_64.rpm -o /tmp/wazuh-manager-4.4.0-13195.cluster.balancing.manager.todelete.x86_64.rpm
 
 # Install packages
 RUN set -x && \
