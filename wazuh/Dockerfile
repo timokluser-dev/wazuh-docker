@@ -23,6 +23,7 @@ baseurl=https://packages.wazuh.com/4.x/yum/\n\
 protect=1\n'\
 >> /etc/yum.repos.d/wazuh.repo
 
+ADD https://packages-dev.wazuh.com/warehouse/test/4.4/rpm/var/wazuh-manager-4.4.0-13195.cluster.balancing.manager.todelete.x86_64.rpm /tmp/wazuh-manager-4.4.0-13195.cluster.balancing.manager.todelete.x86_64.rpm
 
 # Install packages
 RUN set -x && \
@@ -33,7 +34,7 @@ RUN set -x && \
     yum upgrade -y &&\
     yum install -y openssl vim expect python-boto python-pip python-cryptography && \
     yum install -y postfix bsd-mailx mailx ca-certificates && \
-    yum install -y wazuh-manager-${WAZUH_VERSION} && \
+    yum install -y /tmp/wazuh-manager-4.4.0-13195.cluster.balancing.manager.todelete.x86_64.rpm && \
     yum clean all && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* && \
     rm -f /var/ossec/logs/alerts/*/*/* && \
