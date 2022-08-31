@@ -3,7 +3,7 @@ FROM waystonesystems/baseimage-centos:0.2.0
 
 # Arguments
 ARG FILEBEAT_VERSION=7.10.2
-ARG WAZUH_VERSION=4.3.6-1
+ARG WAZUH_VERSION=4.4.0-1
 
 # Environment variables
 ENV API_USER="foo" \
@@ -12,17 +12,14 @@ ENV API_USER="foo" \
 ARG TEMPLATE_VERSION="4.0"
 ENV FILEBEAT_DESTINATION="elasticsearch"
 
-RUN rpm --import https://packages.wazuh.com/key/GPG-KEY-WAZUH
+ARG WAZUH_PACKAGES_DEV="https://packages-dev.wazuh.com/warehouse/branches"
+ARG WAZUH_PACKAGE_BRANCH="4.4"
+ARG WAZUH_PACKAGE_OS="rmp/var"
+ARG RPM_PACKAGE_FILENAME="wazuh-manager-4.4.0-10.x86_64.rpm"
 
-RUN echo $'[wazuh] \n\
-gpgcheck=1\n\
-gpgkey=https://packages.wazuh.com/key/GPG-KEY-WAZUH\n\
-enabled=1\n\
-name=Wazuh repository\n\
-baseurl=https://packages.wazuh.com/4.x/yum/\n\
-protect=1\n'\
->> /etc/yum.repos.d/wazuh.repo
 
+RUN \curl ${WAZUH_PACKAGES_DEV}/${WAZUH_PACKAGE_BRANCH}/${WAZUH_PACKAGE_OS}/${RPM_PACKAGE_FILENAME} \
+    -o /tmp/${RPM_PACKAGE_FILENAME}
 
 # Install packages
 RUN set -x && \
@@ -33,7 +30,8 @@ RUN set -x && \
     yum upgrade -y &&\
     yum install -y openssl vim expect python-boto python-pip python-cryptography && \
     yum install -y postfix bsd-mailx mailx ca-certificates && \
-    yum install -y wazuh-manager-${WAZUH_VERSION} && \
+    echo "INSTALLING WAZUH FROM ${WAZUH_PACKAGES_DEV}/${WAZUH_PACKAGE_BRANCH}/${WAZUH_PACKAGE_OS}/${RPM_PACKAGE_FILENAME}"&& \
+    yum install -y /tmp/${RPM_PACKAGE_FILENAME} &&  \
     yum clean all && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* && \
     rm -f /var/ossec/logs/alerts/*/*/* && \
