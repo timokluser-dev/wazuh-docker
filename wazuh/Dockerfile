@@ -12,6 +12,18 @@ ENV API_USER="foo" \
 ARG TEMPLATE_VERSION="4.0"
 ENV FILEBEAT_DESTINATION="elasticsearch"
 
+
+RUN rpm --import https://packages.wazuh.com/key/GPG-KEY-WAZUH
+
+RUN echo $'[wazuh] \n\
+gpgcheck=1\n\
+gpgkey=https://packages.wazuh.com/key/GPG-KEY-WAZUH\n\
+enabled=1\n\
+name=Wazuh repository\n\
+baseurl=https://packages.wazuh.com/4.x/yum/\n\
+protect=1\n'\
+>> /etc/yum.repos.d/wazuh.repo
+
 ARG WAZUH_PACKAGES_DEV="https://packages-dev.wazuh.com/warehouse/branches"
 ARG WAZUH_PACKAGE_BRANCH="4.4"
 ARG WAZUH_PACKAGE_OS="rpm/var"
