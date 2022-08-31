@@ -14,12 +14,13 @@ ENV FILEBEAT_DESTINATION="elasticsearch"
 
 ARG WAZUH_PACKAGES_DEV="https://packages-dev.wazuh.com/warehouse/branches"
 ARG WAZUH_PACKAGE_BRANCH="4.4"
-ARG WAZUH_PACKAGE_OS="rmp/var"
+ARG WAZUH_PACKAGE_OS="rpm/var"
 ARG RPM_PACKAGE_FILENAME="wazuh-manager-4.4.0-10.x86_64.rpm"
 
 
 RUN \curl ${WAZUH_PACKAGES_DEV}/${WAZUH_PACKAGE_BRANCH}/${WAZUH_PACKAGE_OS}/${RPM_PACKAGE_FILENAME} \
     -o /tmp/${RPM_PACKAGE_FILENAME}
+
 
 # Install packages
 RUN set -x && \
