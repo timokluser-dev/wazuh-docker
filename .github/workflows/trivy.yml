@@ -7,10 +7,10 @@ name: build
 
 on:
   push:
-    branches: [ "4.3-include-trivy" ]
+    branches: [ "4.3-include-trivy-copy" ]
   pull_request:
     # The branches below must be a subset of the branches above
-    branches: [ "4.3-include-trivy" ]
+    branches: [ "4.3-include-trivy-copy" ]
   schedule:
     - cron: '28 21 * * 5'
 
