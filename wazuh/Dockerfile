@@ -13,8 +13,7 @@ ARG TEMPLATE_VERSION="4.0"
 ENV FILEBEAT_DESTINATION="elasticsearch"
 
 # Copy package Wazuh
-RUN aws s3 cp s3://saas.testing/gustavo.choquevilca/wazuh-manager-4.3.11-1.x86_64.rpm /tmp/wazuh-manager-$WAZUH_VERSION.x86_64.rpm
-
+COPY /home/gustavo.choquevilca/git/package-wazuh/wazuh-manager-4.3.11-1.x86_64.rpm /tmp/wazuh-manager-$WAZUH_VERSION.x86_64.rpm
 
 # Install packages
 RUN set -x && \
