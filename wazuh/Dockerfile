@@ -12,11 +12,14 @@ ENV API_USER="foo" \
 ARG TEMPLATE_VERSION="4.0"
 ENV FILEBEAT_DESTINATION="elasticsearch"
 
+# Copy package Wazuh
+RUN aws s3 cp s3://saas.testing/gustavo.choquevilca/wazuh-manager-4.3.11-1.x86_64.rpm /tmp/wazuh-manager-$WAZUH_VERSION.x86_64.rpm
+
+
 # Install packages
 RUN set -x && \
     groupadd -g 1000 wazuh && \
     useradd -u 1000 -g 1000 -d /var/ossec wazuh && \
-    curl -o /tmp/wazuh-manager-$WAZUH_VERSION.x86_64.rpm https://packages.wazuh.com/cloud/4.3.x/rpm/wazuh-manager-$WAZUH_VERSION.x86_64.rpm && \
     yum update -y && \
     yum upgrade -y &&\
     yum install -y openssl vim expect python-boto python-pip python-cryptography postfix bsd-mailx mailx ca-certificates && \
