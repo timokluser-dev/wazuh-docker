@@ -1,5 +1,12 @@
 #!/bin/bash
-# Wazuh Docker Copyright (C) 2017, Wazuh Inc. (License GPLv2)
+# Wazuh Docker Copyright (C) 2017, Wazuh Inc. 
+# License GPLv2
+
+# Load libraries
+source /opt/wazuh/libs/wazuh_dashboard.sh
+
+# Load environment
+source /opt/wazuh/env.sh
 
 INSTALL_DIR=/usr/share/wazuh-dashboard
 DASHBOARD_USERNAME="${DASHBOARD_USERNAME:-kibanaserver}"

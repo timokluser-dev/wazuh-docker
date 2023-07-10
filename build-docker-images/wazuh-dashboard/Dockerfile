@@ -79,7 +79,11 @@ ENV PATTERN="" \
     WAZUH_MONITORING_REPLICAS=""
 
 # Install dependencies
-RUN apt update && apt install -y libnss3-dev fonts-liberation libfontconfig1
+
+RUN apt update && apt install -y wget libnss3-dev fonts-liberation libfontconfig1
+
+RUN wget -qO /usr/local/bin/yq https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64 && \
+    chmod a+x /usr/local/bin/yq
 
 # Create wazuh-dashboard user and group
 RUN getent group $GROUP || groupadd -r -g 1000 $GROUP
@@ -93,6 +97,8 @@ RUN useradd --system \
             $USER
 
 # Copy and set permissions to scripts
+
+COPY root-fs /
 COPY config/entrypoint.sh /
 COPY config/wazuh_app_config.sh /
 RUN chmod 700 /entrypoint.sh
@@ -109,4 +115,6 @@ USER wazuh-dashboard
 # Services ports
 EXPOSE 443
 
-ENTRYPOINT [ "/entrypoint.sh" ]
+ENTRYPOINT [ "/opt/wazuh/entrypoint.sh" ]
+
+CMD [ "/opt/wazuh/run.sh" ]
