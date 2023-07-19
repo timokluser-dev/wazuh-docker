@@ -3,11 +3,34 @@
 # License GPLv2
 
 # Load libraries
-source /opt/wazuh/libs/yml.sh
 source /opt/wazuh/libs/fs.sh
 source /opt/wazuh/libs/log.sh
+source /opt/wazuh/libs/validations.sh
+source /opt/wazuh/libs/yml.sh
 
 # Functions
+
+########################
+# Validate settings in SERVER_* env vars
+# Globals:
+#   SERVER_*
+# Arguments:
+#   None
+# Returns:
+#   0 if the validation succeeded, 1 otherwise
+#########################
+validate_environment_variables() {
+    local error_code=0
+
+    for var in "WAZUH_DASHBOARD_SERVER_PORT"; do
+        if ! err=$(is_port "${!var}"); then
+            echo "An invalid port was specified in the environment variable $var: $err"
+            error_code=1
+        fi
+    done
+
+    [[ "$error_code" -eq 0 ]] || exit "$error_code"
+}
 
 ########################
 # Configure Wazuh APP YAML
@@ -118,7 +141,6 @@ configure_wazuh_dashboard_yaml() {
                 yml_set_value "$WAZUH_DASHBOARD_CONF_FILE" "${params[0]}" "$(yml_coerce_array_property ${!params[1]})"
             fi
         done
-
     fi
 }
 

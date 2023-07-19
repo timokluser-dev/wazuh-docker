@@ -3,6 +3,9 @@
 # License GPLv2
 
 # Paths
+export WAZUH_VOLUME_DIR="/wazuh"
+export WAZUH_DASHBOARD_VOLUME_DIR="${WAZUH_VOLUME_DIR}/wazuh-dasbhoard"
+
 export WAZUH_DASHBOARD_BASE_DIR="/usr/share/wazuh-dashboard"
 export WAZUH_DASHBOARD_CONF_DIR="${WAZUH_DASHBOARD_BASE_DIR}/config"
 export WAZUH_DASHBOARD_DATA_DIR="${WAZUH_DASHBOARD_BASE_DIR}/data"
@@ -10,6 +13,10 @@ export WAZUH_DASHBOARD_BIN_DIR="${WAZUH_DASHBOARD_BASE_DIR}/bin"
 export WAZUH_DASHBOARD_CONF_FILE="${WAZUH_DASHBOARD_CONF_DIR}/opensearch_dashboards.yml"
 export WAZUH_DASHBOARD_KEYSTORE_FILE="${WAZUH_DASHBOARD_CONF_DIR}/opensearch_dashboards.keystore"
 export WAZUH_DASHBOARD_APP_CONF_FILE="${WAZUH_DASHBOARD_DATA_DIR}/wazuh/config/wazuh.yml"
+
+# Default custom scripts
+export WAZUH_INIT_SCRIPTS_DIR=/init-scripts.d
+export WAZUH_CUSTOM_SCRIPTS_DIR=/custom-scripts.d
 
 # Default credentials for wazuh-dashboard
 export WAZUH_DASHBOARD_USERNAME="${WAZUH_DASHBOARD_USERNAME:-admin}"

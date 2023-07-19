@@ -2,6 +2,10 @@
 # Wazuh Docker Copyright (C) 2017, Wazuh Inc. 
 # License GPLv2
 
+set -o errexit
+set -o nounset
+set -o pipefail
+
 # Load libraries
 source /opt/wazuh/libs/log.sh
 

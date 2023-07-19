@@ -36,7 +36,6 @@ yml_set_value() {
     cp "$path_temp" "$path"
 }
 
-
 ########################
 # Coerce a string value to a array
 #

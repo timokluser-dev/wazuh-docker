@@ -89,6 +89,9 @@ services:
       - ./config/wazuh_indexer_ssl_certs/root-ca.pem:/usr/share/wazuh-dashboard/certs/root-ca.pem
       - ./config/wazuh_dashboard/wazuh_app_config:/usr/share/wazuh-dashboard/data/wazuh/config
       - ./config/wazuh_dashboard/wazuh_dashboard_config:/usr/share/wazuh-dashboard/config
+      - ./config/wazuh_dashboard/wazuh:/wazuh
+      - ./config/wazuh_dashboard/init-scripts.d:/init-scripts.d
+      - ./config/wazuh_dashboard/custom-scripts.d:/custom-scripts.d
       - ../build-docker-images/wazuh-dashboard/root-fs/opt:/opt
     depends_on:
       - wazuh.indexer
