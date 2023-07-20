@@ -78,11 +78,14 @@ services:
       - WAZUH_API_URL=https://wazuh.manager
       - WAZUH_DASHBOARD_USERNAME=kibanaserver
       - WAZUH_DASHBOARD_PASSWORD=kibanaserver
+
       - WAZUH_DASHBOARD_APP_HOSTS_DEFAULT_URL=https://wazuh.manager
       - WAZUH_DASHBOARD_APP_HOSTS_DEFAULT_PORT=55000
       - WAZUH_DASHBOARD_APP_HOSTS_DEFAULT_USERNAME=wazuh-wui
       - WAZUH_DASHBOARD_APP_HOSTS_DEFAULT_PASSWORD=MyS3cr37P450r.*-
       - WAZUH_DASHBOARD_APP_HOSTS_DEFAULT_RUN_AS=false
+
+      - WAZUH_DASHBOARD_APP_HOSTS_OVERWRITE=true
     volumes:
       - ./config/wazuh_indexer_ssl_certs/wazuh.dashboard.pem:/usr/share/wazuh-dashboard/certs/wazuh-dashboard.pem
       - ./config/wazuh_indexer_ssl_certs/wazuh.dashboard-key.pem:/usr/share/wazuh-dashboard/certs/wazuh-dashboard-key.pem

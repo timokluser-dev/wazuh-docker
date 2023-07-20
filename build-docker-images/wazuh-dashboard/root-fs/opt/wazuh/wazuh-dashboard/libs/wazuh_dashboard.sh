@@ -11,9 +11,9 @@ source /opt/wazuh/libs/yml.sh
 # Functions
 
 ########################
-# Validate settings in SERVER_* env vars
+# Validate settings in WAZUH_DASHBOARD_* env vars
 # Globals:
-#   SERVER_*
+#   WAZUH_DASHBOARD_*
 # Arguments:
 #   None
 # Returns:
@@ -70,6 +70,10 @@ configure_wazuh_app_yaml() {
         "wazuh.monitoring.replicas;WAZUH_APP_WAZUH_MONITORING_REPLICAS"
     )
 
+    configurations_with_array_type=(
+        "ip.ignore;WAZUH_APP_IP_IGNORE"
+    )
+
     if ! file_exists "$WAZUH_DASHBOARD_APP_CONF_FILE"; then
         touch $WAZUH_DASHBOARD_APP_CONF_FILE
         
@@ -80,10 +84,6 @@ configure_wazuh_app_yaml() {
             fi
         done
 
-        configurations_with_array_type=(
-            "ip.ignore;WAZUH_APP_IP_IGNORE"
-        )
-        
         for config in "${configurations_with_array_type[@]}"; do
             IFS=';' read -ra params <<< "$config"
             if [[ ! -z "${!params[1]+x}" ]]; then
@@ -93,7 +93,27 @@ configure_wazuh_app_yaml() {
 
         yml_set_value "$WAZUH_DASHBOARD_APP_CONF_FILE" "hosts" "$(get_hosts_from_environment_variables)"
     fi
-    
+
+    # Overwrite
+    for config in "${configurations[@]}"; do
+        IFS=';' read -ra params <<< "$config"
+        local env_overwrite="${params[1]}_OVERWRITE"
+        if [[ ! -z "${!env_overwrite+x}" ]] && [[ ! -z "${!params[1]+x}" ]]; then
+            yml_set_value "$WAZUH_DASHBOARD_APP_CONF_FILE" "${params[0]}" "${!params[1]}" "${params[2]}"
+        fi
+    done
+
+    for config in "${configurations_with_array_type[@]}"; do
+        IFS=';' read -ra params <<< "$config"
+        local env_overwrite="${params[1]}_OVERWRITE"
+        if [[ ! -z "${!env_overwrite+x}" ]] && [[ ! -z "${!params[1]+x}" ]]; then
+            yml_set_value "$WAZUH_DASHBOARD_APP_CONF_FILE" "${params[0]}" "$(yml_coerce_array_property ${!params[1]})"
+        fi
+    done
+
+    if [[ -v WAZUH_DASHBOARD_APP_HOSTS_OVERWRITE ]]; then
+        yml_set_value "$WAZUH_DASHBOARD_APP_CONF_FILE" "hosts" "$(get_hosts_from_environment_variables)"
+    fi
 }
 
 ########################
@@ -176,7 +196,7 @@ configure_wazuh_dashboard_keystore() {
 get_hosts_from_environment_variables() {
     configurations=$(yq e ".hosts=[]" - <<< "{}")
 
-    for host in $(env | grep '^WAZUH_DASHBOARD_APP_HOSTS_' | cut -d'_' -f5 | sort -u); do
+    for host in $(env | grep '^WAZUH_DASHBOARD_APP_HOSTS_' | grep -v 'WAZUH_DASHBOARD_APP_HOSTS_OVERWRITE' | cut -d'_' -f5 | sort -u); do
         local name=$(echo "$host" | tr '[:upper:]' '[:lower:]')
         local env_prefix="WAZUH_DASHBOARD_APP_HOSTS_${host}"
 
