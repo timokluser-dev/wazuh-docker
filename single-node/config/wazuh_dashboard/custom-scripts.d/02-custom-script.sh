@@ -1,1 +1,7 @@
-echo "02-custom-script"
+# Load libraries
+source /opt/wazuh/libs/log.sh
+
+# Load environment
+source /opt/wazuh/wazuh-dashboard/env.sh
+
+info "02-custom-script"
