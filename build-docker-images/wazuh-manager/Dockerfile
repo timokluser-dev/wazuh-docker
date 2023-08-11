@@ -1,5 +1,5 @@
 # Wazuh Docker Copyright (C) 2017, Wazuh Inc. (License GPLv2)
-FROM ubuntu:focal
+FROM ubuntu:jammy
 
 RUN rm /bin/sh && ln -s /bin/bash /bin/sh
 
@@ -20,9 +20,9 @@ RUN source /check_repository.sh
 RUN apt-get update && \
     apt-get install wazuh-manager=${WAZUH_VERSION}-${WAZUH_TAG_REVISION}
 
-RUN curl -L -O https://artifacts.elastic.co/downloads/beats/filebeat/${FILEBEAT_CHANNEL}-${FILEBEAT_VERSION}-amd64.deb &&\
-    dpkg -i ${FILEBEAT_CHANNEL}-${FILEBEAT_VERSION}-amd64.deb && rm -f ${FILEBEAT_CHANNEL}-${FILEBEAT_VERSION}-amd64.deb && \
-    curl -s https://packages.wazuh.com/4.x/filebeat/${WAZUH_FILEBEAT_MODULE} | tar -xvz -C /usr/share/filebeat/module
+RUN curl -L -O https://github.com/vrince/arm-beats/releases/download/v7.13.4/filebeat-7.13.4-linux-armv7l.tar.gz &&\
+    cp filebeat-7.13.4-linux-armv7l.tar.gz /usr/share/ && tar -xvf filebeat-7.13.4-linux-armv7l.tar.gz && mv filebeat-7.13.4-linux-armv7l filebeat &&\
+    mkdir -p /usr/share/filebeat/module && curl -s https://packages.wazuh.com/4.x/filebeat/${WAZUH_FILEBEAT_MODULE} | tar -xvz -C /usr/share/filebeat/module
 
 RUN curl -L https://github.com/aelsabbahy/goss/releases/latest/download/goss-linux-amd64 -o /usr/local/bin/goss && chmod +rx /usr/local/bin/goss
 
