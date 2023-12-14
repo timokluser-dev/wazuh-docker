@@ -6,6 +6,8 @@ source /permanent_data.env
 
 WAZUH_INSTALL_PATH=/var/ossec
 WAZUH_CONFIG_MOUNT=/wazuh-config-mount
+FILEBEAT_CONFIG_PATH=/etc/filebeat
+FILEBEAT_CONFIG_MOUNT=/filebeat-config-mount
 AUTO_ENROLLMENT_ENABLED=${AUTO_ENROLLMENT_ENABLED:-true}
 
 
@@ -141,6 +143,24 @@ mount_files() {
   fi
 }
 
+##############################################################################
+# Copy all files from $FILEBEAT_CONFIG_MOUNT to $FILEBEAT_CONFIG_PATH and respect
+# destination files permissions
+#
+# For example, to mount the file /etc/filebeat/wazuh-template.json, mount it at
+# $FILEBEAT_CONFIG_MOUNT/wazuh-template.json in your container and this code will
+# replace the wazuh-template.json file in /etc/filebeat with yours.
+##############################################################################
+
+mount_conf_fb_files() {
+  if [ -e "$FILEBEAT_CONFIG_MOUNT" ]
+  then
+    print "Identified filebeat configuration files to mount..."
+    exec_cmd_stdout "cp --verbose -r $FILEBEAT_CONFIG_MOUNT/* $FILEBEAT_CONFIG_PATH"
+  else
+    print "No Wazuh configuration files to mount..."
+  fi
+}
 
 ##############################################################################
 # Allow users to set the container hostname as <node_name> dynamically on
@@ -219,6 +239,9 @@ main() {
 
   # Mount selected files (WAZUH_CONFIG_MOUNT) to container
   mount_files
+
+  # Mount selected files (FILEBEAT_CONFIG_MOUNT) to container
+  mount_conf_fb_files
 
   # Allow setting custom hostname
   set_custom_hostname
