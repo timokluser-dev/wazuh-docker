@@ -13,15 +13,15 @@ MINOR_CURRENT=$(echo $WAZUH_CURRENT_VERSION | cut -d. -f3)
 ## check version to use the correct repository
 if [ "$MAJOR_BUILD" -gt "$MAJOR_CURRENT" ]; then
   APT_KEY=https://packages-dev.wazuh.com/key/GPG-KEY-WAZUH
-  REPOSITORY="deb ${GPG_SIGN} https://packages-dev.wazuh.com/pre-release/apt/ unstable main"
+  REPOSITORY="deb ${GPG_SIGN} https://packages-dev.wazuh.com/staging/apt/ unstable main"
 elif [ "$MAJOR_BUILD" -eq "$MAJOR_CURRENT" ]; then
   if [ "$MID_BUILD" -gt "$MID_CURRENT" ]; then
     APT_KEY=https://packages-dev.wazuh.com/key/GPG-KEY-WAZUH
-    REPOSITORY="deb ${GPG_SIGN} https://packages-dev.wazuh.com/pre-release/apt/ unstable main"
+    REPOSITORY="deb ${GPG_SIGN} https://packages-dev.wazuh.com/staging/apt/ unstable main"
   elif [ "$MID_BUILD" -eq "$MID_CURRENT" ]; then
     if [ "$MINOR_BUILD" -gt "$MINOR_CURRENT" ]; then
       APT_KEY=https://packages-dev.wazuh.com/key/GPG-KEY-WAZUH
-      REPOSITORY="deb ${GPG_SIGN} https://packages-dev.wazuh.com/pre-release/apt/ unstable main"
+      REPOSITORY="deb ${GPG_SIGN} https://packages-dev.wazuh.com/staging/apt/ unstable main"
     fi
   fi
 fi
