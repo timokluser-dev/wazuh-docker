@@ -1,4 +1,5 @@
 # Wazuh App Copyright (C) 2017, Wazuh Inc. (License GPLv2)
+# Modificación para comprobación de funcionamiento de SSH Github
 version: '3.7'
 
 services:
