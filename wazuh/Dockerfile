@@ -69,6 +69,7 @@ RUN chmod 755 /permanent_data.sh && \
 VOLUME ["/var/ossec/api/configuration"]
 VOLUME ["/var/ossec/etc"]
 VOLUME ["/var/ossec/logs"]
+VOLUME ["/var/ossec/tmp"]
 VOLUME ["/var/ossec/queue"]
 VOLUME ["/var/ossec/agentless"]
 VOLUME ["/var/ossec/var/multigroups"]
