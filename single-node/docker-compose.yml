@@ -1,5 +1,5 @@
 # Wazuh App Copyright (C) 2017, Wazuh Inc. (License GPLv2)
-version: '3.7'
+version: "3.7"
 
 services:
   wazuh.manager:
@@ -115,7 +115,7 @@ services:
         hard: 65536
     ports:
       # Wazuh web user interface
-      - 443:5601
+      - "443:5601"
     environment:
       WAZUH_API_URL: https://wazuh.manager
       DASHBOARD_USERNAME: kibanaserver
