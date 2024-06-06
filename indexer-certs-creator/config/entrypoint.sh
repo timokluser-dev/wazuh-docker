@@ -41,16 +41,20 @@ source /$CERT_TOOL -A
 nodes_server=$( cert_parseYaml /config.yml | grep -E "nodes[_]+server[_]+[0-9]+=" | sed -e 's/nodes__server__[0-9]=//' | sed 's/"//g' )
 node_names=($nodes_server)
 
+# make directory temprary writable
+chmod -R 700 /certificates
+
 echo "Moving created certificates to the destination directory"
 cp /wazuh-certificates/* /certificates/
+# rename certificates
+cp /certificates/root-ca.pem /certificates/root-ca-manager.pem
+cp /certificates/root-ca.key /certificates/root-ca-manager.key
 echo "Changing certificate permissions"
 chmod -R 500 /certificates
 chmod -R 400 /certificates/*
 echo "Setting UID indexer and dashboard"
 chown 1000:1000 /certificates/*
 echo "Setting UID for wazuh manager and worker"
-cp /certificates/root-ca.pem /certificates/root-ca-manager.pem
-cp /certificates/root-ca.key /certificates/root-ca-manager.key
 chown 999:999 /certificates/root-ca-manager.pem
 chown 999:999 /certificates/root-ca-manager.key
 
