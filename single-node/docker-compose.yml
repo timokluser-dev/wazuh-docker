@@ -19,9 +19,9 @@ services:
       # Agent enrollment service
       - "1515:1515"
       # Wazuh Syslog collector (disabled by default)
-      - "514:514/udp"
+      # - "514:514/udp"
       # Wazuh server RESTful API
-      - "55000:55000"
+      - "127.0.0.1:55000:55000"
     environment:
       INDEXER_URL: https://wazuh.indexer:9200
       INDEXER_USERNAME: admin
@@ -60,9 +60,9 @@ services:
       nofile:
         soft: 65536
         hard: 65536
-    ports:
-      # Wazuh indexer RESTful API
-      - "9200:9200"
+    # ports:
+    #   # Wazuh indexer RESTful API
+    #   - "9200:9200"
     environment:
       OPENSEARCH_JAVA_OPTS: "-Xms1g -Xmx1g"
       bootstrap.memory_lock: "true"
