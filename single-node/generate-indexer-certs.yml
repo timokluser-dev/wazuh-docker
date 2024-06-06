@@ -4,6 +4,9 @@ version: '3'
 services:
   generator:
     image: wazuh/wazuh-certs-generator:0.0.2
+    build:
+      dockerfile: Dockerfile
+      context: ./../indexer-certs-creator
     hostname: wazuh-certs-generator
     volumes:
       - ./config/wazuh_indexer_ssl_certs/:/certificates/
